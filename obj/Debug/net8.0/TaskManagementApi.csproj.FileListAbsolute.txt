@@ -140,3 +140,5 @@ C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.ge
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\ref\TaskManagementApi.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.staticwebassets.runtime.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.sourcelink.json
+C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\BCrypt-Net-Next.dll

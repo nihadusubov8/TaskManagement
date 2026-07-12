@@ -7,8 +7,8 @@ namespace TaskManagementApi.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        // Sadece bu iki setir olmalidir:
+        // Burada TodoTasks yox, Assignments olmalıdır
+        public DbSet<Assignment> Assignments { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<TodoTasks> TodoTasks { get; set; }
     }
 }

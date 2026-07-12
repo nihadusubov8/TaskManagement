@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManagementApi.Data;
 using TaskManagementApi.Models;
-using Swashbuckle.AspNetCore.Annotations; // 1. Bu kitabxananı əlavə etdik
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace TaskManagementApi.Controllers
 {
@@ -18,58 +18,57 @@ namespace TaskManagementApi.Controllers
         }
 
         [HttpPost]
-        [SwaggerOperation(Summary = "Tapşırıq Əlavə Etmək")] // 2. Adı dəyişdik
-        public async Task<ActionResult<TodoTasks>> AddTask(TodoTaskDto dto)
+        [SwaggerOperation(Summary = "Tapşırıq Əlavə Etmək")]
+        public async Task<ActionResult<Assignment>> AddTask(AssignmentDto dto)
         {
-            if (string.IsNullOrEmpty(dto.Title)) return BadRequest("Başlıq boş ola bilməz.");
-
-            var task = new TodoTasks
+            var task = new Assignment
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                IsCompleted = dto.IsCompleted,
-                UserId = 1
+                Status = dto.Status,
+                UserId = dto.UserId
             };
 
-            _context.TodoTasks.Add(task);
+            _context.Assignments.Add(task);
             await _context.SaveChangesAsync();
             
             return Ok(task);
         }
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Aktiv Tapşırıqlar")] // Adı dəyişdik
-        public async Task<ActionResult<List<TodoTasks>>> GetTasks()
+        [SwaggerOperation(Summary = "Bütün Tapşırıqlar")]
+        public async Task<ActionResult<List<Assignment>>> GetTasks()
         {
-            return await _context.TodoTasks.ToListAsync();
-        }
-
-        [HttpGet("user/{userId}")]
-        [SwaggerOperation(Summary = "İstifadəçinin Tapşırıqlarını Gör")] // Adı dəyişdik
-        public async Task<ActionResult<List<TodoTasks>>> GetUserTasks(int userId)
-        {
-            return await _context.TodoTasks.Where(t => t.UserId == userId).ToListAsync();
+            return await _context.Assignments.ToListAsync();
         }
 
         [HttpPut("{id}")]
-        [SwaggerOperation(Summary = "Tapşırığı Yenilə")] // Adı dəyişdik
-        public async Task<IActionResult> UpdateTask(int id, TodoTasks task)
+        [SwaggerOperation(Summary = "Tapşırığı Yenilə (Status dəyişmək üçün)")]
+        public async Task<IActionResult> UpdateTask(int id, AssignmentDto dto)
         {
-            if (id != task.Id) return BadRequest("ID uyğunsuzluğu.");
-            
-            _context.Entry(task).State = EntityState.Modified;
+            var task = await _context.Assignments.FindAsync(id);
+            if (task == null) return NotFound("Tapşırıq tapılmadı.");
+
+            // DTO-dan gələn məlumatları yeniləyirik
+            task.Title = dto.Title;
+            task.Description = dto.Description;
+            task.Status = dto.Status;
+            task.UserId = dto.UserId;
+
             await _context.SaveChangesAsync();
-            return NoContent();
+            
+            // Ok(task) qaytaraq ki, Swagger dəyişikliyi görsün
+            return Ok(task);
         }
 
         [HttpDelete("{id}")]
-        [SwaggerOperation(Summary = "Tapşırıq Silmək")] // Adı dəyişdik
+        [SwaggerOperation(Summary = "Tapşırıq Silmək")]
         public async Task<IActionResult> DeleteTask(int id)
         {
-            var task = await _context.TodoTasks.FindAsync(id);
+            var task = await _context.Assignments.FindAsync(id);
             if (task == null) return NotFound("Tapşırıq tapılmadı.");
 
-            _context.TodoTasks.Remove(task);
+            _context.Assignments.Remove(task);
             await _context.SaveChangesAsync();
             return NoContent();
         }
