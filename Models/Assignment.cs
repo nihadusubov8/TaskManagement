@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TaskManagementApi.Models // Burası mütləq Status.cs ilə eyni olmalıdır!
+namespace TaskManagementApi.Models
 {
     public class Assignment
     {
@@ -11,10 +12,18 @@ namespace TaskManagementApi.Models // Burası mütləq Status.cs ilə eyni olmal
 
         public string? Description { get; set; }
 
-        // Artıq using TaskManagementApi.Models; yazmağa ehtiyac yoxdur, 
-        // çünki ikisi də eyni namespace-dədir!
-        public Status Status { get; set; } = Status.Todo; 
+        public Status Status { get; set; } = Status.Todo;
 
-        public int UserId { get; set; }
+        // Kim yaradıb
+        public int CreatedByUserId { get; set; }
+        
+        [ForeignKey("CreatedByUserId")]
+        public User CreatedByUser { get; set; } = null!;
+
+        // Kimə təyin olunub
+        public int AssigneUserId { get; set; }
+        
+        [ForeignKey("AssigneUserId")]
+        public User AssigneUser { get; set; } = null!;
     }
 }

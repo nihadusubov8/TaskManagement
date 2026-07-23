@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TaskManagementApi.Data;
 using TaskManagementApi.Models;
 
@@ -10,19 +14,26 @@ namespace TaskManagementApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(DataContext context)
+        public AuthController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserRegisterDto registerDto)
+        public async Task<ActionResult<object>> Register(UserRegisterDto registerDto)
         {
-            // Şifrəni BCrypt ilə standart şəkildə hash-ləyirik
+            // Eyni username mövcuddursa qeydiyyatı dayandır
+            if (await _context.Users.AnyAsync(u => u.Username == registerDto.Username))
+            {
+                return BadRequest("Bu istifadəçi adı artıq mövcuddur.");
+            }
+
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
 
-            var user = new User 
+            var user = new User
             {
                 Username = registerDto.Username,
                 PasswordHash = passwordHash,
@@ -31,32 +42,43 @@ namespace TaskManagementApi.Controllers
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            
-            return Ok(user);
+
+            // Şifrə hash-i client-ə getməsin
+            return Ok(new { user.Id, user.Username, user.Email });
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<object>> Login(UserLoginDto request)
         {
-            // İstifadəçini tapırıq
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
-            
-            // İstifadəçi yoxdursa və ya şifrə yanlışdırsa eyni xətanı veririk (təhlükəsizlik üçün)
-            if (user == null)
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 return BadRequest("İstifadəçi adı və ya şifrə yanlışdır.");
             }
 
-            // Hash-lənmiş şifrəni yoxlayırıq
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-            
-            if (!isPasswordValid)
+            var claims = new List<Claim>
             {
-                return BadRequest("İstifadəçi adı və ya şifrə yanlışdır.");
-            }
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            };
 
-            // Giriş uğurludur
-            return Ok(new { message = "Giriş uğurludur!" });
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                _configuration.GetSection("Jwt:Key").Value!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return Ok(new { token = tokenHandler.WriteToken(token) });
         }
     }
 }

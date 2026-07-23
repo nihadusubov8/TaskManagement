@@ -13,12 +13,10 @@ async function login() {
     if (response.ok) {
         const data = await response.json();
         
-        // Bura əlavə edirik: Əgər token varsa onu saxla, yoxdursa sadəcə yönləndir
         if (data.token) {
             localStorage.setItem('jwtToken', data.token);
             window.location.href = 'admin.html';
         } else {
-            // Token yoxdursa, sadəcə admin.html-ə keç
             window.location.href = 'admin.html';
         }
     } else {
@@ -27,14 +25,21 @@ async function login() {
 }
 
 async function initPanel() {
-    const response = await fetch('/api/Todo');
+
+    const token = localStorage.getItem('jwtToken');
+
+    const response = await fetch('/api/Assignment', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    });
+
     if (response.ok) {
         const tasks = await response.json();
         const listDiv = document.getElementById('task-list');
 
         if (tasks && tasks.length > 0) {
             listDiv.innerHTML = tasks.map(t => {
-                // Status yoxlanışı (1=AÇIQ, 0=BAĞLI)
                 const isActive = t.status === 1;
                 const statusColor = isActive ? "green" : "red";
                 const statusText = isActive ? "AÇIQ" : "BAĞLI";
@@ -59,6 +64,9 @@ async function initPanel() {
         } else {
             listDiv.innerHTML = "Hələlik tapşırıq yoxdur.";
         }
+    } else if (response.status === 401) {
+        alert("Sessiya bitib, yenidən daxil olun.");
+        window.location.href = 'index.html';
     } else {
         console.log("Tapşırıqları yükləmək mümkün olmadı.");
     }
@@ -71,17 +79,18 @@ function toggleDescription(id) {
 
 async function deleteTask(id) {
     const token = localStorage.getItem('jwtToken');
-    await fetch(`/api/Todo/${id}`, {
+    await fetch(`/api/Assignment/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + token }
     });
     location.reload();
 }
+
 async function register() {
     const userData = {
         username: document.getElementById('username').value,
         password: document.getElementById('password').value,
-        email: document.getElementById('email').value // HTML-dən email-i oxuyur
+        email: document.getElementById('email').value
     };
 
     const response = await fetch('/api/Auth/register', {

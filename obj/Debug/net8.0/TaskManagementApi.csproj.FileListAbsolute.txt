@@ -1,5 +1,6 @@
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\appsettings.json
+C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.staticwebassets.runtime.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.staticwebassets.endpoints.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.exe
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.deps.json
@@ -8,7 +9,9 @@ C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.dl
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.pdb
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\BCrypt-Net-Next.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Humanizer.dll
+C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
@@ -123,6 +126,7 @@ C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.As
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.csproj.CoreCompileInputs.cache
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.sourcelink.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -138,7 +142,3 @@ C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\refint\TaskManagemen
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.pdb
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.genruntimeconfig.cache
 C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\ref\TaskManagementApi.dll
-C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\TaskManagementApi.staticwebassets.runtime.json
-C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
-C:\Users\PC\Desktop\.şi\TaskManagementApi\obj\Debug\net8.0\TaskManagementApi.sourcelink.json
-C:\Users\PC\Desktop\.şi\TaskManagementApi\bin\Debug\net8.0\BCrypt-Net-Next.dll
